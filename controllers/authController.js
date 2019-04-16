@@ -28,8 +28,17 @@ class AuthController{
         var {username, password} = req.body;
         connection.query('select id, password from user where username="'+username+'"', function(err, results, fields){
             if(results!=''){
-                console.log(results[0].password)
-                return  res.json(results[0]);
+                bcrypt.compare(password.toString(), results[0].password, function(err, response) {
+                    if(response){
+                        // create token here
+                    }
+                    else{
+                        return res.json({
+                            'success' : false,
+                            'message' : 'password not correct'
+                        });
+                    }
+                });
             }
             else{
                 return  res.json({
