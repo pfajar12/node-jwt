@@ -1,6 +1,7 @@
 var mysql   = require('mysql');
 var config  = require('../config');
 var bcrypt  = require('bcrypt');
+var jwt     = require('jsonwebtoken');
 
 var connection = mysql.createConnection({
     host     : config.host,
@@ -26,11 +27,19 @@ class AuthController{
 
     static login(req, res){
         var {username, password} = req.body;
-        connection.query('select id, password from user where username="'+username+'"', function(err, results, fields){
+        connection.query('select id, username, password from user where username="'+username+'"', function(err, results, fields){
             if(results!=''){
                 bcrypt.compare(password.toString(), results[0].password, function(err, response) {
                     if(response){
                         // create token here
+                        var token = jwt.sign({ results }, config.secret, {
+                            expiresIn: "24h"
+                        });
+                        return res.json({
+                            'success' : true,
+                            'message' : 'token berhasil didapatkan',
+                            'token'   : token
+                        });
                     }
                     else{
                         return res.json({
@@ -47,7 +56,6 @@ class AuthController{
                 });
             }
         })
-        // bcrypt.compare(myPlaintextPassword, hash, function(err, res) {})
     }
 }
 

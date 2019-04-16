@@ -1,6 +1,5 @@
 const express = require('express');
 var bodyParser = require('body-parser');
-var jwt = require('jsonwebtoken');
 var cors = require('cors');
 var app = express();
 var routes = require('./routes/index');

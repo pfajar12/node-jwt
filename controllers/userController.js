@@ -16,6 +16,10 @@ class UserController{
             return res.json(results);
         });
     }
+
+    static getProfile(req, res){
+        return res.json(req.decoded.results)
+    }
 }
 
 module.exports = UserController;
