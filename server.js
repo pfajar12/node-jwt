@@ -4,7 +4,7 @@ var cors = require('cors');
 var app = express();
 var routes = require('./routes/index');
 var config = require('./config');
-var port = 3000;
+var port = 3001;
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
